@@ -8,9 +8,6 @@ QuickJS wrapper for Android/JVM.
 - Optimize not a function with its name when type error
 - Compile bytecode
 
-Experimental Features Stability not guaranteed.
-- ESModule (import, export)
-
 ## Download
 
 [![Maven Central](https://img.shields.io/maven-central/v/wang.harlon.quickjs/wrapper-android.svg?label=Maven%20Central&color=blue)](https://search.maven.org/search?q=g:%22wang.harlon.quickjs%22%20AND%20a:%22wrapper-android%22)
@@ -213,37 +210,6 @@ Also, you can view it in `QuickJSTest.testReturnJSCallback` code
 ```Java
 byte[] code = context.compile("'hello, world!'.toUpperCase();");
 context.execute(code);
-```
-
-### ESModule
-Java
-```Java
-// 1. string code mode
-context.setModuleLoader(new QuickJSContext.DefaultModuleLoader() {
-    @Override
-    public String getModuleStringCode(String moduleName) {
-       if (moduleName.equals("a.js")) {
-           return "export var name = 'Jack';\n" +
-                   "export var age = 18;";
-       }
-       return null;
-    }
-});
-
-// 2. bytecode mode
-context.setModuleLoader(new QuickJSContext.BytecodeModuleLoader() {
-    @Override
-    public byte[] getModuleBytecode(String moduleName) {
-        return context.compileModule("export var name = 'Jack';export var age = 18;", moduleName);
-    }
-});
-```
-JavaScript
-```JavaScript
-import {name, age} from './a.js';
-
-console.log('name：' + name); // Jack
-console.log('age：' + age); // 18
 ```
 
 ## R8 / ProGuard
